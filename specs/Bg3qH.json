@@ -5,6 +5,11 @@
         "version": "1.0",
         "description": "Sample hypermedia API designed by Darrel Miller running in an API App on App Service."
     },
+    "servers": [
+        {
+            "url": "https://httpbin.org"
+        }
+    ],
     "host": "mibudz-private.azure-api.net",
     "basePath": "/bigconference",
     "schemes": ["http", "https"],
