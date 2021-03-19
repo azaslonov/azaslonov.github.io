@@ -1,0 +1,498 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Big Conference API",
+        "version": "1.0",
+        "description": "Sample hypermedia API designed by Darrel Miller running in an API App on App Service."
+    },
+    "host": "mibudz-private.azure-api.net",
+    "basePath": "/bigconference",
+    "schemes": ["http", "https"],
+    "securityDefinitions": {
+        "apiKeyHeader": {
+            "type": "apiKey",
+            "name": "Ocp-Apim-Subscription-Key",
+            "in": "header"
+        },
+        "apiKeyQuery": {
+            "type": "apiKey",
+            "name": "subscription-key",
+            "in": "query"
+        }
+    },
+    "security": [{
+        "apiKeyHeader": []
+    }, {
+        "apiKeyQuery": []
+    }],
+    "paths": {
+        "/": {
+            "get": {
+                "description": "OpenAPI (fka Swagger) document to describe API",
+                "operationId": "Home_Get",
+                "summary": "Home_Get",
+                "parameters": [{
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Get200ApplicationJsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/Session/{sessionId}/Rating": {
+            "get": {
+                "description": "Get rating for a conference session by its id.",
+                "operationId": "Session_GetRatingBySessionid",
+                "summary": "Session_GetRatingBySessionid",
+                "parameters": [{
+                    "name": "sessionId",
+                    "in": "path",
+                    "description": "",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Post your rating for this session",
+                "operationId": "Session_PostRatingById",
+                "summary": "Post your rating for this session",
+                "parameters": [{
+                    "name": "sessionId",
+                    "in": "path",
+                    "description": "",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "UserId",
+                    "in": "query",
+                    "type": "string"
+                }, {
+                    "name": "IsSpeaker",
+                    "in": "query",
+                    "type": "boolean"
+                }, {
+                    "name": "PostingDate",
+                    "in": "query",
+                    "description": "Format - date (as full-date in RFC3339).",
+                    "type": "string"
+                }, {
+                    "name": "AdminKey",
+                    "in": "header",
+                    "description": "6 digit user id",
+                    "type": "string"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }, {
+                    "name": "body",
+                    "in": "body",
+                    "schema": {
+                        "$ref": "#/definitions/Body"
+                    }
+                }],
+                "consumes": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/days": {
+            "get": {
+                "operationId": "Days_Get",
+                "summary": "Days_Get",
+                "parameters": [{
+                    "name": "SessionFilter",
+                    "in": "query",
+                    "type": "string"
+                }, {
+                    "name": "LevelFilter",
+                    "in": "query",
+                    "description": "Format - int32.",
+                    "type": "integer"
+                }, {
+                    "name": "DateFilter",
+                    "in": "query",
+                    "type": "string"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }, {
+                    "name": "AdminKey",
+                    "in": "header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SessionArray"
+                        }
+                    }
+                }
+            }
+        },
+        "/session/{id}": {
+            "get": {
+                "operationId": "Session_GetById",
+                "summary": "Session_GetById",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Format - int32. Format - int32.",
+                    "required": true,
+                    "type": "integer"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Session"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a session",
+                "operationId": "Session_DeleteById",
+                "summary": "Delete a session",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Format - int32. Format - int32.",
+                    "required": true,
+                    "type": "integer"
+                }, {
+                    "name": "UserId",
+                    "in": "header",
+                    "description": "6 digit user ID",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/session/{id}/topics": {
+            "get": {
+                "operationId": "Session_GetTopicsBySessionById",
+                "summary": "Session_GetTopicsBySessionById",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Format - int32. Format - int32.",
+                    "required": true,
+                    "type": "integer"
+                }, {
+                    "name": "subscription-key",
+                    "in": "query",
+                    "description": "subscription key in url",
+                    "type": "string"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Session"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions": {
+            "get": {
+                "operationId": "Sessions_Get",
+                "summary": "Sessions_Get",
+                "parameters": [{
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SessionArray"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/byspeakerid": {
+            "get": {
+                "operationId": "Sessions_GetSessionsBySpeakerBySpeakerid",
+                "summary": "Sessions_GetSessionsBySpeakerBySpeakerid",
+                "parameters": [{
+                    "name": "speakerId",
+                    "in": "query",
+                    "description": "Format - int32. Format - int32.",
+                    "required": true,
+                    "type": "integer"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SessionArray"
+                        }
+                    }
+                }
+            }
+        },
+        "/sessions/byspeakername": {
+            "get": {
+                "operationId": "Sessions_GetSessionsBySpeakerNameBySpeakername",
+                "summary": "Sessions_GetSessionsBySpeakerNameBySpeakername",
+                "parameters": [{
+                    "name": "speakername",
+                    "in": "query",
+                    "required": true,
+                    "type": "string"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SessionArray"
+                        }
+                    }
+                }
+            }
+        },
+        "/speakers": {
+            "get": {
+                "operationId": "Speakers_Get",
+                "summary": "Speakers_Get",
+                "parameters": [{
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/topic/{id}": {
+            "get": {
+                "operationId": "Topic_GetTopicById",
+                "summary": "Topic_GetTopicById",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Format - int32. Format - int32.",
+                    "required": true,
+                    "type": "integer"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/topic/{id}/sessions": {
+            "get": {
+                "operationId": "Topic_GetSessionsByTopicById",
+                "summary": "Topic_GetSessionsByTopicById",
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "Format - int32. Format - int32.",
+                    "required": true,
+                    "type": "integer"
+                }, {
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SessionArray"
+                        }
+                    }
+                }
+            }
+        },
+        "/topics": {
+            "get": {
+                "operationId": "Topics_Get",
+                "summary": "Topics_Get",
+                "parameters": [{
+                    "name": "Ocp-Apim-Subscription-Key",
+                    "in": "header",
+                    "description": "subscription key in header",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Add Topic",
+                "operationId": "Topics_Post",
+                "summary": "Add Topic",
+                "parameters": [{
+                    "name": "body-1",
+                    "in": "body",
+                    "schema": {
+                        "$ref": "#/definitions/Body-1"
+                    }
+                }],
+                "consumes": ["application/json", "text/plain"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "description": "Update Topic",
+                "operationId": "Topics_Put",
+                "summary": "Update Topic",
+                "parameters": [{
+                    "name": "TopicId",
+                    "in": "query",
+                    "description": "Format - int32.",
+                    "type": "integer"
+                }, {
+                    "name": "body-2",
+                    "in": "body",
+                    "schema": {
+                        "$ref": "#/definitions/Body-2"
+                    }
+                }],
+                "consumes": ["application/json", "text/plain"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete Topic",
+                "operationId": "Topics_Delete",
+                "summary": "Delete Topic",
+                "tags": ["testtag"],
+                "parameters": [{
+                    "name": "Topic Id",
+                    "in": "query",
+                    "description": "Format - int32.",
+                    "type": "integer"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Session": {
+            "type": "object",
+            "required": ["presenter", "sessionId"],
+            "properties": {
+                "presenter": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "sessionId": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            },
+            "description": "A session object"
+        },
+        "Get200ApplicationJsonResponse": {
+            "type": "string"
+        },
+        "Body": {
+            "type": "integer",
+            "format": "int32",
+            "example": "87"
+        },
+        "SessionArray": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Session"
+            }
+        },
+        "Body-1": {
+            "type": "string"
+        },
+        "Body-2": {
+            "type": "string"
+        }
+    },
+    "tags": []
+}
